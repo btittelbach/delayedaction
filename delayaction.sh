@@ -10,7 +10,7 @@ local LOCKNAME
 local SHOWHELP
 
 DELAY=("t" "10")
-zparseopts -D -E "n:=LOCKNAME" "t:=DELAY" "h:=SHOWHELP"
+zparseopts -D -E "n:=LOCKNAME" "t:=DELAY" "h=SHOWHELP"
 if [[ -n "$SHOWHELP" ]]; then
 	print "Everytime $0 is called, a timer is reset (or started if this is the first call)"
 	print "If the timer expires, <cmd> is called and $0 exits"
