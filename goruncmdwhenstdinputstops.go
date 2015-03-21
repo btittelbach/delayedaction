@@ -1,5 +1,7 @@
 package main
 
+/// (c) 2015, Bernhard Tittelbach, xro@realraum.at
+
 /// IDEA: wait for input on stdin
 /// start a timer "-t <seconds>" and
 /// run given command "$*" after no
@@ -15,13 +17,20 @@ import (
 	"time"
 )
 
-var delay_s int64
+var delay_s time.Duration
 var showhelp bool
 
 func init() {
-	flag.Int64Var(&delay_s, "delay", 10, "in seconds after which events have stopped coming, execute cmd")
-	flag.BoolVar(&showhelp, "help", false, "show help")
+	flag.DurationVar(&delay_s, "delay", time.Second*10, "after which events have stopped coming, execute cmd. e.g.: 2m")
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage:\n%s [-d <duration>] <cmd>\nWill execute cmd after <duration> has elapsed without any new input on stdin\n\nOptions:\n", os.Args[0])
+		flag.PrintDefaults()
+	}
 	flag.Parse()
+	if len(flag.Args()) < 1 {
+		flag.Usage()
+		os.Exit(1)
+	}
 }
 
 func runcmd(tC <-chan time.Time) {
@@ -46,7 +55,7 @@ func runcmd(tC <-chan time.Time) {
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("Listening to stdin. Will run cmd after %ds without new input\n", delay_s)
+	fmt.Printf("Listening to stdin. Will run cmd after %.1fs without new input\n", delay_s.Seconds())
 	timer := time.NewTimer(0)
 	timer.Stop()
 	buffer := make([]byte, 1)
@@ -56,6 +65,6 @@ func main() {
 		if err != nil {
 			break
 		}
-		timer.Reset(time.Second * time.Duration(delay_s))
+		timer.Reset(delay_s)
 	}
 }
