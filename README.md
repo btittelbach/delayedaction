@@ -12,7 +12,7 @@ Your event triggers a timer. On each event the timer is reset. If events finally
 
 ## Considerations
 
-Sometimes it might be useful, to run the command right away and then inhibit further actions as events keep coming in. I've never needed this so far. That is not what this script does right now. Pulls welcome
+Sometimes it might be useful, to run the command right away and then inhibit further actions as events keep coming in. I've never needed this so far. That is not what this script does right now. Patches and pull-requests welcome
 
 # Tools:
 
