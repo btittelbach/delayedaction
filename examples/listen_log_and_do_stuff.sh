@@ -12,6 +12,6 @@ if [[ $1 == "doit" ]]; then
 	sleep 2
 	for fa ($DEVICES) echo 1 >| "$fa"
 else
-	tail -n0 -F $LOGFILE | egrep --line-buffered "$LOGREGEX" | /usr/local/bin/goruncmdwhenstdinputstops -t 5 ${0:a} doit
+	tail -n0 -F $LOGFILE | egrep --line-buffered "$LOGREGEX" | /usr/local/bin/goruncmdwhenstdinputstops --delay 5s ${0:a} doit
 fi
 exit 0
